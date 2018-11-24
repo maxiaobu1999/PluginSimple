@@ -1,0 +1,57 @@
+apply plugin: 'com.android.application'
+android {
+    compileSdkVersion rootProject.ext.targetSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+
+    defaultConfig {
+        applicationId "com.malong.toutiao"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.compileSdkVersion
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+// 这个plugin需要放在android配置之后，因为需要读取android中的配置项
+apply plugin: 'replugin-plugin-gradle'
+repluginPluginConfig {
+//    appModule = ':app'
+    //插件名
+    pluginName = "toutiao"
+    //宿主app的包名
+    hostApplicationId = "com.malong.pluginsimple"
+    //宿主app的启动activity
+    hostAppLauncherActivity = "com.malong.pluginsimple.SplashActivity"
+}
+
+configurations.all {
+    resolutionStrategy.force "com.android.support:support-annotations:${rootProject.ext.supportLibrary}"
+}
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile "com.android.support:appcompat-v7:${rootProject.ext.supportLibrary}"
+    testCompile 'junit:junit:4.12'
+    androidTestCompile('com.android.support.test.espresso:espresso-core:3.0.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+    compile "com.qihoo360.replugin:replugin-plugin-lib:${rootProject.ext.replugin}"
+    //router
+    compile "com.github.yjfnypeu.Router-RePlugin:plugin:${rootProject.ext.replugin_router}"
+    compile "com.github.yjfnypeu.Router:router-api:${rootProject.ext.router}"
+    annotationProcessor "com.github.yjfnypeu.Router:router-compiler:${rootProject.ext.router}"
+//    annotationProcessor "com.github.yjfnypeu.Router:router-compiler:${rootProject.ext.router}"
+
+}

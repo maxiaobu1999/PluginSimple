@@ -1,0 +1,58 @@
+buildscript {
+    ext.kotlin_version = '1.1.3'
+
+    repositories {
+        google()
+        jcenter()
+        mavenLocal()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.3.3'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.qihoo360.replugin:replugin-host-gradle:2.3.0'
+        classpath 'com.qihoo360.replugin:replugin-plugin-gradle:2.3.0'
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        maven { url 'https://jitpack.io' }
+        mavenLocal()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+ext {
+    minSdkVersion = 17
+    targetSdkVersion = 27
+    compileSdkVersion = 27
+    buildToolsVersion = "27.0.2"
+    supportLibrary = "27.0.2"
+    androidSupportSdkVersion = "27.0.2"
+
+    replugin = "2.3.0"
+    //Router-RePlugin
+    router = "2.6.0"
+    replugin_router = "0.8.0"
+
+}
+
+
+apply plugin: 'replugin-host-gradle'
+
+repluginHostConfig {
+    /**
+     * 是否使用 AppCompat 库
+     * 不需要个性化配置时，无需添加
+     */
+    useAppCompat = true
+    compatibleVersion = 13 //当前app_stub版本
+    persistentEnable = false //设置常驻进程:生产为true，测试为false
+}
